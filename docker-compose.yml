@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  react-app:
+    build:    # `build .` won't work without a Dockerfile
+      context: .  # where do we want the files from
+      dockerfile: Dockerfile.dev   # which dockerfile to use
+    ports:
+      - "3000:3000"
+    volumes: 
+      - /app/node_modules # this is saying: do not try to map a folder up against /app/node_modules inside the container
+      - .:/app # map . to app inside container
+  tests: # second container for running tests
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    command: ["npm", "run", "test"]
+
+# this replaces the long docker volume command:
+# docker run -p 3000:3000 -v /app/node_modules -v $(pwd):/app  <container id>
