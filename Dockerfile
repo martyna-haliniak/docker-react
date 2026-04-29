@@ -4,7 +4,7 @@ FROM node:16-alpine AS builder
 WORKDIR '/app'
 
 COPY package.json .
-RUN npm install 
+RUN npm ci
 COPY . . 
 
 # volumes not needed anymore as we're not changing our source code
